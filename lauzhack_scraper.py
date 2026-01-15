@@ -47,7 +47,8 @@ class HackathonInfo:
     url: str
     date_line: str
     location_line: str
-    schedule: List[Dict[str, str]]  # [{"day": "Saturday", "time": "8:00-9:30", "item": "Check in and breakfast"}, ...]
+    # [{"day": "Saturday", "time": "8:00-9:30", "item": "Check in and breakfast"}, ...]
+    schedule: List[Dict[str, str]]
 
 
 def fetch_html_requests(url: str, timeout: int = 30) -> Tuple[int, str]:
@@ -265,7 +266,8 @@ def parse_projects_generic(year: int, html: str) -> List[Project]:
         if title_idx < 0:
             title_idx = max(0, team_idx - 1)
 
-        title_line = lines_tail[title_idx] if 0 <= title_idx < len(lines_tail) else lines_tail[0]
+        title_line = lines_tail[title_idx] if 0 <= title_idx < len(
+            lines_tail) else lines_tail[0]
         title_line = _clean_spaces(title_line)
 
         # Split title into name and awards
@@ -276,7 +278,8 @@ def parse_projects_generic(year: int, html: str) -> List[Project]:
             name = m[0].strip()
             awards = _clean_spaces(" ".join(m[1:]))
         else:
-            kw = re.search(r"\b(1st|2nd|3rd)\b|\bplace\b|\bwinner\b|\bprize\b", title_line, re.I)
+            kw = re.search(
+                r"\b(1st|2nd|3rd)\b|\bplace\b|\bwinner\b|\bprize\b", title_line, re.I)
             if kw:
                 pos = kw.start()
                 name = title_line[:pos].strip().rstrip(",")
@@ -321,7 +324,8 @@ def parse_projects_generic(year: int, html: str) -> List[Project]:
 def parse_hackathon_home(year: int, url: str, html: str) -> HackathonInfo:
     soup = BeautifulSoup(html, "html.parser")
     main = soup.find("main") or soup.body or soup
-    lines = [ln.strip() for ln in main.get_text("\n", strip=True).splitlines() if ln.strip()]
+    lines = [ln.strip() for ln in main.get_text(
+        "\n", strip=True).splitlines() if ln.strip()]
 
     # Date line heuristic: first line containing a Month name
     month_re = re.compile(
@@ -359,7 +363,8 @@ def parse_hackathon_home(year: int, url: str, html: str) -> HackathonInfo:
 
         m = time_item_re.match(ln)
         if m and current_day:
-            schedule.append({"day": current_day, "time": m.group(1), "item": m.group(2).strip()})
+            schedule.append(
+                {"day": current_day, "time": m.group(1), "item": m.group(2).strip()})
 
     return HackathonInfo(
         year=year,
@@ -379,7 +384,8 @@ def save_projects_csv(path: str, projects: List[Project]) -> None:
     with open(path, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(
             f,
-            fieldnames=["year", "name", "awards", "description", "team", "link", "tags"],
+            fieldnames=["year", "name", "awards", "description",
+                        "team", "link", "tags", "readme"],
         )
         w.writeheader()
         for p in projects:
@@ -392,7 +398,8 @@ def save_hackathons_csv(path: str, infos: List[HackathonInfo]) -> None:
     with open(path, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(
             f,
-            fieldnames=["year", "url", "date_line", "location_line", "schedule_json"],
+            fieldnames=["year", "url", "date_line",
+                        "location_line", "schedule_json"],
         )
         w.writeheader()
         for info in infos:
@@ -427,17 +434,19 @@ def main() -> None:
         hackathons.append(info)
 
     # Outputs
-    save_json("lauzhack_projects.json", [asdict(p) for p in all_projects])
-    save_projects_csv("lauzhack_projects.csv", all_projects)
+    save_json("data/lauzhack_projects.json", [asdict(p) for p in all_projects])
+    save_projects_csv("data/lauzhack_projects.csv", all_projects)
 
-    save_json("lauzhack_hackathons.json", [asdict(h) for h in hackathons])
-    save_hackathons_csv("lauzhack_hackathons.csv", hackathons)
+    save_json("data/lauzhack_hackathons.json", [asdict(h) for h in hackathons])
+    save_hackathons_csv("data/lauzhack_hackathons.csv", hackathons)
 
-    print("Wrote:")
-    print("  lauzhack_projects.json")
-    print("  lauzhack_projects.csv")
-    print("  lauzhack_hackathons.json")
-    print("  lauzhack_hackathons.csv")
+    print("\nWrote:")
+    print("  data/lauzhack_projects.json")
+    print("  data/lauzhack_projects.csv")
+    print("  data/lauzhack_hackathons.json")
+    print("  data/lauzhack_hackathons.csv")
+    print("\nTo enrich with GitHub data, run:")
+    print("  python enrich_github_data.py [--token YOUR_GITHUB_TOKEN]")
 
 
 if __name__ == "__main__":
