@@ -43,6 +43,17 @@ Get your GitHub token: [github.com/settings/tokens](https://github.com/settings/
 
 ## Files
 
-- `lauzhack_scraper.py` - Scrapes hackathon projects and metadata
-- `github_extractor.py` - Extracts GitHub data (stars, commits, contributors, README)
-- `enrich_github_data.py` - Merges scraped + GitHub data
+**`lauzhack_scraper.py`**
+
+- Scrapes LauZHack websites (2023-2025) to extract project information and hackathon metadata
+- Outputs: `data/lauzhack_projects.csv`, `data/lauzhack_projects.json`, `data/lauzhack_hackathons.csv`, `data/lauzhack_hackathons.json`
+
+**`github_extractor.py`**
+
+- Helper module with functions to extract GitHub repo data (stars, forks, commits, contributors, README)
+- Used by `enrich_github_data.py` (no need to run directly)
+
+**`enrich_github_data.py`**
+
+- Takes the scraped projects and enriches them with GitHub data for all repos
+- Outputs: `data/lauzhack_projects_with_github.csv`, `data/github_repos_data.json`
