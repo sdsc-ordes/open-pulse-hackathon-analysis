@@ -102,28 +102,39 @@ def save_merged_data(df):
 
 def main():
     """Main execution flow."""
-    print("="*60)
-    print("LAUZHACK DATA MERGER")
-    print("="*60)
+    # print("="*60)
+    # print("LAUZHACK DATA MERGER")
+    # print("="*60)
 
-    # Ensure data directory exists
-    Path("data").mkdir(exist_ok=True)
+    # # Ensure data directory exists
+    # Path("data").mkdir(exist_ok=True)
+    # 
+    # # Load data
+    # projects_df, hackathons_df = load_data()
+    # 
+    # # Merge datasets
+    # merged_df = merge_data(projects_df, hackathons_df)
+    # 
+    # # Save merged data
+    # save_merged_data(merged_df)
 
-    # Load data
-    projects_df, hackathons_df = load_data()
+    # print("\n" + "="*60)
+    # print("✓ Complete! All data merged and saved.")
+    # print("="*60)
 
-    # Merge datasets
-    merged_df = merge_data(projects_df, hackathons_df)
+    complete_df = pd.read_csv("data/lauzhack_complete_dataset.csv")
 
-    # Analyze
-    analyze_data(merged_df)
+    # Calculate contribution span
+    complete_df['contribution_span'] = (pd.to_datetime(complete_df['github_last_commit']) - pd.to_datetime(complete_df['github_first_commit'])).dt.days
+    print(f"Contribution span calculated for {len(complete_df)} projects")
 
-    # Save merged data
-    save_merged_data(merged_df)
+    print(complete_df[complete_df['contribution_span']>=30].value_counts('year'))
 
-    print("\n" + "="*60)
-    print("✓ Complete! All data merged and saved.")
-    print("="*60)
+    # analyze_data(complete_df)
+
+    print(complete_df.columns)
+
+
 
 
 if __name__ == "__main__":
