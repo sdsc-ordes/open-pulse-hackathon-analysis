@@ -1,5 +1,9 @@
 # LauZHack Projects Extractor
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+License: Apache License 2.0 — see [LICENSE](LICENSE) for details.
+
 Scrapes LauZHack hackathon data (2023-2025) and enriches it with GitHub repository information.
 
 ## Setup
