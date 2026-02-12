@@ -1,8 +1,7 @@
 
 <h1 align="center">
   Hackathon Data scraper and Analyzer
-<p align="center">
-</p>
+</h1 >
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -13,7 +12,7 @@ Scrapes LauZHack hackathon data (2023-2025) and enriches it with GitHub reposito
 **Authors**:
 - [Eisha Tir Raazia](mailto:eisha.mazhar19@gmail.com)
   
-  
+
 ## Setup
 
 ```bash
@@ -69,3 +68,12 @@ Get your GitHub token: [github.com/settings/tokens](https://github.com/settings/
 
 - Takes the scraped projects and enriches them with GitHub data for all repos
 - Outputs: `data/lauzhack_projects_with_github.csv`, `data/github_repos_data.json`
+
+## Copyright
+
+Copyright © 2025-2028 Swiss Data Science Center (SDSC),
+[www.datascience.ch](http://www.datascience.ch/). All rights reserved. The SDSC
+is jointly established and legally represented by the École Polytechnique
+Fédérale de Lausanne (EPFL) and the Eidgenössische Technische Hochschule Zürich
+(ETH Zürich). This copyright encompasses all materials, software, documentation,
+and other content created and developed by the SDSC.
